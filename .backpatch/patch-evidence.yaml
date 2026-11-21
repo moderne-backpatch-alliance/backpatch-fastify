@@ -1,0 +1,21 @@
+schema: osera-patch-evidence/0.1.0
+producer: moderne
+release: 5.8.6-backpatch-00001
+baseline: v5.8.5+backpatch.baseline
+fixes:
+  - cve: CVE-2026-16732
+    upstream_fix_url: https://github.com/fastify/fastify/commit/8acfea7eada05383a7357e3eb21c2628416df280
+    advisory_url: https://nvd.nist.gov/vuln/detail/CVE-2026-16732
+    patch_commit_url: https://github.com/moderne-backpatch-alliance/backpatch-fastify/commit/6581c3b
+    basis: backport
+    artifacts:
+      - fastify
+    note: "New in this release; upstream's fix in 5.12.1. It closes the advisory: fastify vulnerable to X-Forwarded-* spoofing under trustProxy hop-count."
+tests:
+  commit: 6581c3b3ca9d72a87cbca4065bf9517d5eacce87
+  command: npm install --ignore-scripts --before=2026-04-14T12:07:12Z for the tag's package.json, npm pack --ignore-scripts at the tested commit, then node --test --test-reporter=junit on each test/**/*.test.{js,mjs} file of the tested commit against the packed package, and tsc test/types/import.ts --noEmit && tsd; the per-file reports merged into one JUnit report
+  runtime: Node.js v22.23.2, npm 10.9.8, typescript 6.0.2, tsd 0.33.0, macOS 27.2 arm64
+  report: fastify-5.8.6-backpatch-00001-tests.zip
+  report_sha256: 85b0384b2f44df4650552584868e910d12537dc4da1feffb4044638d56cae5b7
+  result: pass
+  note: "upstream's node --test files (.borp.yaml: test/**/*.test.js and *.test.mjs, each file alone) plus its test:typescript script (tsc test/types/import.ts, tsd), on the packed package with the tested commit's test/ at the tested commit: 2144 tests, 2141 passed, 0 failed, 3 skipped. The tag ships no lockfile; dev and runtime dependencies are the tag's package.json resolved as of the 5.8.5 publish time (npm install --before 2026-04-14T12:07:12Z), since later find-my-way and light-my-request releases fail two tests on npmjs's 5.8.5 too. The CVE tests (test/trust-proxy.test.js test/types/fastify.test-d.ts), with this release's production lines reverted at the tested commit: 11 tests, 7 passed, 4 failed, 0 skipped, test files exiting non-zero: test/trust-proxy.test.js; with them: 11 tests, 11 passed, 0 failed, 0 skipped. Built with npm pack (no build step) in a directory named fastify, 348 of npmjs's 355 files for 5.8.5 are identical; the rest are docs/Reference/Server.md, fastify.d.ts, fastify.js, lib/request.js, package.json, test/trust-proxy.test.js, test/types/fastify.test-d.ts. The archive's file-origins.yaml maps each packaged file to the commit, or names its inputs and build."
