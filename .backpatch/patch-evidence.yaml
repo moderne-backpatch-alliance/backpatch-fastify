@@ -1,6 +1,6 @@
 schema: osera-patch-evidence/0.1.0
 producer: moderne
-release: 5.8.6-backpatch-00001
+release: 5.8.6-backpatch-00002
 baseline: v5.8.5+backpatch.baseline
 fixes:
   - cve: CVE-2026-16732
@@ -10,12 +10,20 @@ fixes:
     basis: backport
     artifacts:
       - fastify
-    note: "New in this release; upstream's fix in 5.12.1. It closes the advisory: fastify vulnerable to X-Forwarded-* spoofing under trustProxy hop-count."
+    note: "Carried from 5.8.6-backpatch-00001; upstream's fix in 5.12.1. It closes the advisory: fastify vulnerable to X-Forwarded-* spoofing under trustProxy hop-count."
+  - cve: CVE-2026-18504
+    upstream_fix_url: https://github.com/fastify/fastify/commit/1ef8a60c87e94f42f666aa15ad68957772a83655
+    advisory_url: https://nvd.nist.gov/vuln/detail/CVE-2026-18504
+    patch_commit_url: https://github.com/moderne-backpatch-alliance/backpatch-fastify/commit/e88f381
+    basis: backport
+    artifacts:
+      - fastify
+    note: "New in this release; upstream's fix in 5.12.1. It closes the advisory: fastify vulnerable to schema validation bypass via root primitive coercion mismatch."
 tests:
-  commit: 6581c3b3ca9d72a87cbca4065bf9517d5eacce87
+  commit: e88f381438264dd3cf5206f9795e833c9c9ac0b1
   command: npm install --ignore-scripts --before=2026-04-14T12:07:12Z for the tag's package.json, npm pack --ignore-scripts at the tested commit, then node --test --test-reporter=junit on each test/**/*.test.{js,mjs} file of the tested commit against the packed package, and tsc test/types/import.ts --noEmit && tsd; the per-file reports merged into one JUnit report
   runtime: Node.js v22.23.2, npm 10.9.8, typescript 6.0.2, tsd 0.33.0, macOS 27.2 arm64
-  report: fastify-5.8.6-backpatch-00001-tests.zip
-  report_sha256: 85b0384b2f44df4650552584868e910d12537dc4da1feffb4044638d56cae5b7
+  report: fastify-5.8.6-backpatch-00002-tests.zip
+  report_sha256: 125675cd3bda682cf0ed141430a80c54829b11d1679f85b57c39e1bb9d47e4e7
   result: pass
-  note: "upstream's node --test files (.borp.yaml: test/**/*.test.js and *.test.mjs, each file alone) plus its test:typescript script (tsc test/types/import.ts, tsd), on the packed package with the tested commit's test/ at the tested commit: 2144 tests, 2141 passed, 0 failed, 3 skipped. The tag ships no lockfile; dev and runtime dependencies are the tag's package.json resolved as of the 5.8.5 publish time (npm install --before 2026-04-14T12:07:12Z), since later find-my-way and light-my-request releases fail two tests on npmjs's 5.8.5 too. The CVE tests (test/trust-proxy.test.js test/types/fastify.test-d.ts), with this release's production lines reverted at the tested commit: 11 tests, 7 passed, 4 failed, 0 skipped, test files exiting non-zero: test/trust-proxy.test.js; with them: 11 tests, 11 passed, 0 failed, 0 skipped. Built with npm pack (no build step) in a directory named fastify, 348 of npmjs's 355 files for 5.8.5 are identical; the rest are docs/Reference/Server.md, fastify.d.ts, fastify.js, lib/request.js, package.json, test/trust-proxy.test.js, test/types/fastify.test-d.ts. The archive's file-origins.yaml maps each packaged file to the commit, or names its inputs and build."
+  note: "upstream's node --test files (.borp.yaml: test/**/*.test.js and *.test.mjs, each file alone) plus its test:typescript script (tsc test/types/import.ts, tsd), on the packed package with the tested commit's test/ at the tested commit: 2145 tests, 2142 passed, 0 failed, 3 skipped. The tag ships no lockfile; dev and runtime dependencies are the tag's package.json resolved as of the 5.8.5 publish time (npm install --before 2026-04-14T12:07:12Z), since later find-my-way and light-my-request releases fail two tests on npmjs's 5.8.5 too. The CVE tests (test/fix-root-primitive-coercion.test.js), with this release's production lines reverted at the tested commit: 1 tests, 0 passed, 1 failed, 0 skipped, test files exiting non-zero: test/fix-root-primitive-coercion.test.js; with them: 1 tests, 1 passed, 0 failed, 0 skipped. Built with npm pack (no build step) in a directory named fastify, 347 of npmjs's 355 files for 5.8.5 are identical; the rest are docs/Reference/Server.md, fastify.d.ts, fastify.js, lib/request.js, lib/validation.js, package.json, test/trust-proxy.test.js, test/types/fastify.test-d.ts. The archive's file-origins.yaml maps each packaged file to the commit, or names its inputs and build. The package keeps npmjs's file list: test/fix-root-primitive-coercion.test.js, which this release adds, is left out of it; it is at the tested commit and its results are in the report."
