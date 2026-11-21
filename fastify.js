@@ -1,6 +1,6 @@
 'use strict'
 
-const VERSION = '5.8.6-backpatch-00006'
+const VERSION = '5.8.6-backpatch-00007'
 
 const Avvio = require('avvio')
 const http = require('node:http')
