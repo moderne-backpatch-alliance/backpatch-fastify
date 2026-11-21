@@ -186,6 +186,7 @@ expectAssignable<FastifyInstance>(fastify({
   }
 }))
 expectAssignable<FastifyInstance>(fastify({ trustProxy: true }))
+expectError(fastify({ trustProxy: 1 }))
 expectAssignable<FastifyInstance>(fastify({ querystringParser: () => ({ foo: 'bar' }) }))
 expectAssignable<FastifyInstance>(fastify({ querystringParser: () => ({ foo: { bar: 'fuzz' } }) }))
 expectAssignable<FastifyInstance>(fastify({ querystringParser: () => ({ foo: ['bar', 'fuzz'] }) }))
