@@ -1,6 +1,6 @@
 {
   "name": "fastify",
-  "version": "5.8.6-backpatch-00001",
+  "version": "5.8.6-backpatch-00002",
   "description": "Fast and low overhead web framework, for Node.js",
   "main": "fastify.js",
   "type": "commonjs",
